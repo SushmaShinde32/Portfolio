@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candidate Profile: Solution & Service Operations Support Engineer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- CSS Configuration -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate-50 */
+            color: #334155; /* Slate-700 */
+        }
+
+        /* Chart Container Styling - Mandatory Strictness */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px; /* max-w-xl equivalent */
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; 
+            max-height: 400px;
+        }
+        
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 350px; 
+            } 
+        }
+
+        /* Custom Scrollbar for sleek look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+
+        /* Transitions */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-active {
+            border-bottom: 2px solid #0f766e; /* Teal-700 */
+            color: #0f766e;
+            font-weight: 600;
+        }
+    </style>
+
+    <!-- Chosen Palette: Warm Professional - Slate (Base), Teal (Accent/Success), Amber (Highlight) -->
+    <!-- Application Structure Plan: 
+         1. Header: Quick identifying info and primary navigation.
+         2. Executive Dashboard (Hero): High-level summary and "Key Performance Indicators" (KPIs) extracted from the CV (SLA, Years Exp).
+         3. Experience Timeline: Interactive vertical timeline. Clicking a role updates a detail view side-panel, allowing deep dives without scrolling.
+         4. Impact Analytics: Visualizing the quantitative achievements (Efficiency gains, SLA adherence) using Chart.js.
+         5. Skills Matrix: A categorize-able grid of technical skills to allow recruiters to filter by "Service Ops" vs "Testing".
+         This structure transforms a static list into an exploratory interface, proving the "Technical Mindset" required by the job.
+    -->
+    <!-- Visualization & Content Choices:
+         1. KPI Cards: (Text/Number) -> Immediate value proposition (98% SLA).
+         2. Experience Timeline: (Interactive List) -> Shows career progression.
+         3. SLA Comparison Chart: (Chart.js Bar) -> Visualizes consistency in performance across roles.
+         4. Automation Impact Chart: (Chart.js Doughnut) -> Visualizes the 40% efficiency gain at TCS.
+         5. Skills Filter: (JS Interaction) -> demonstrates organized thinking.
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+</head>
+<body class="bg-slate-50 min-h-screen flex flex-col">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-slate-800 tracking-tight">Support<span class="text-teal-600">Engineer</span></span>
+                </div>
+                <div class="hidden sm:flex space-x-8 items-center" id="nav-links">
+                    <button onclick="navigateTo('dashboard')" class="nav-btn nav-active text-slate-600 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors" data-target="dashboard">Dashboard</button>
+                    <button onclick="navigateTo('experience')" class="nav-btn text-slate-600 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors" data-target="experience">Experience</button>
+                    <button onclick="navigateTo('skills')" class="nav-btn text-slate-600 hover:text-teal-600 px-3 py-2 text-sm font-medium transition-colors" data-target="skills">Skills Matrix</button>
+                </div>
+                <!-- Mobile menu button placeholder (simplified for single file) -->
+                <div class="flex items-center sm:hidden">
+                    <button onclick="toggleMobileMenu()" class="text-slate-500 hover:text-slate-700 focus:outline-none">
+                        ☰
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden sm:hidden bg-white border-t border-slate-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="navigateTo('dashboard')" class="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Dashboard</button>
+                <button onclick="navigateTo('experience')" class="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Experience</button>
+                <button onclick="navigateTo('skills')" class="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50">Skills</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+
+        <!-- VIEW: DASHBOARD (Home) -->
+        <section id="dashboard" class="fade-in space-y-8">
+            
+            <!-- Intro Block -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <h1 class="text-3xl font-bold text-slate-900 mb-2">Solution & Service Operations Support Engineer</h1>
+                        <p class="text-slate-600 max-w-2xl text-lg leading-relaxed">
+                            Highly motivated professional with nearly 9 years of experience in L2 Application Support, QA, and technical customer service. 
+                            Specializing in production issue ownership, SLA compliance, and integration reliability.
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-2 text-sm text-slate-500 bg-slate-50 p-4 rounded-lg border border-slate-100 min-w-[200px]">
+                        <div class="flex items-center gap-2">📍 Tampere, Finland</div>
+                        <div class="flex items-center gap-2">📧 sushshinde32@gmail.com</div>
+                        <div class="flex items-center gap-2">📞 +358 413110192</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KPI Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-teal-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Total Experience</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">~9 Years</p>
+                    <p class="text-xs text-slate-500 mt-2">Support & QA Lifecycle</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-teal-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">SLA Compliance</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">95-98%</p>
+                    <p class="text-xs text-slate-500 mt-2">Consistent High Performance</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-blue-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Issues Resolved</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">30+/mo</p>
+                    <p class="text-xs text-slate-500 mt-2">Complex Production Issues</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-500">
+                    <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Efficiency Gain</p>
+                    <p class="text-3xl font-bold text-slate-800 mt-1">40%</p>
+                    <p class="text-xs text-slate-500 mt-2">Via Automation (TCS)</p>
+                </div>
+            </div>
+
+            <!-- Performance Analytics Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Chart 1: SLA History -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-slate-800">Operational Reliability Profile</h3>
+                        <p class="text-sm text-slate-500">Comparing achieved SLA compliance across major roles against standard industry targets (90%). This demonstrates a consistent history of exceeding expectations in high-pressure environments.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="slaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 2: Impact Breakdown -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                    <div class="mb-4">
+                        <h3 class="text-lg font-bold text-slate-800">Quality & Efficiency Impact</h3>
+                        <p class="text-sm text-slate-500">Visualizing the tangible value delivered in previous roles, specifically focusing on manual effort reduction through automation and product stability improvements.</p>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="impactChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- VIEW: EXPERIENCE (Timeline) -->
+        <section id="experience" class="hidden fade-in">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Professional Journey</h2>
+                <p class="text-slate-600">
+                    An interactive timeline of my career. Select a role on the left to view detailed achievements, technical environments, and specific contributions to service operations on the right.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Timeline List -->
+                <div class="lg:w-1/3 bg-white rounded-xl shadow-sm border border-slate-200 p-4 h-fit">
+                    <div class="space-y-4" id="timeline-container">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Detail View -->
+                <div class="lg:w-2/3 bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 min-h-[500px] flex flex-col justify-center items-center text-center" id="role-details-panel">
+                    <!-- Default State -->
+                    <div class="text-slate-400">
+                        <p class="text-4xl mb-4">👈</p>
+                        <p class="text-lg font-medium">Select a role to view details</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- VIEW: SKILLS (Matrix) -->
+        <section id="skills" class="hidden fade-in">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 md:p-8 mb-8">
+                <h2 class="text-2xl font-bold text-slate-900 mb-2">Technical Competency Matrix</h2>
+                <p class="text-slate-600 mb-6">
+                    A categorized overview of my technical toolkit. Filter by domain to see how my skills align with specific aspects of the Support Engineer role, from direct Service Operations to backend Database Management.
+                </p>
+                
+                <!-- Filters -->
+                <div class="flex flex-wrap gap-2" id="skill-filters">
+                    <button onclick="filterSkills('all')" class="skill-filter-btn px-4 py-2 rounded-full text-sm font-medium bg-teal-600 text-white shadow-sm transition-all" data-category="all">All Skills</button>
+                    <button onclick="filterSkills('operations')" class="skill-filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-category="operations">Service Ops</button>
+                    <button onclick="filterSkills('integration')" class="skill-filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-category="integration">Integration & QA</button>
+                    <button onclick="filterSkills('tech')" class="skill-filter-btn px-4 py-2 rounded-full text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all" data-category="tech">DB & Scripting</button>
+                </div>
+            </div>
+
+            <!-- Skills Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="skills-grid">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="font-bold text-slate-800">Solution & Service Operations Support Engineer</h3>
+            <p class="text-slate-500 text-sm mt-2">Available for opportunities in Helsinki</p>
+            <div class="mt-4 flex justify-center gap-4 text-sm text-teal-600">
+                <span>sushshinde32@gmail.com</span>
+                <span>•</span>
+                <span>+358 413110192</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- DATA ---
+        
+        const experienceData = [
+            {
+                id: 'documill',
+                role: 'Solution Support Engineer (Intern)',
+                company: 'Documill',
+                location: 'Espoo, Helsinki',
+                period: '08/2024 – 3/2025 (Expected)',
+                summary: 'Delivering L2 technical support for a SaaS platform while driving customer onboarding and product quality.',
+                highlights: [
+                    '<strong>Production Support:</strong> Achieved 98% SLA compliance resolving 30+ complex customer issues/month via Zendesk.',
+                    '<strong>QA Leadership:</strong> Led 5+ functional test cycles contributing to a 12% improvement in product stability.',
+                    '<strong>Integration:</strong> Customized PDF/Word templates based on diverse business logic and data integration needs.',
+                    '<strong>Customer Success:</strong> Created webinars and guides to reduce churn and improve onboarding success.'
+                ],
+                techStack: ['Zendesk', 'SaaS', 'QA', 'Confluence', 'Template Logic']
+            },
+            {
+                id: 'tcs',
+                role: 'QA / Automation Engineer',
+                company: 'Tata Consultancy Services',
+                client: 'Morgan Stanley',
+                location: 'Pune, India',
+                period: '09/2019 – 10/2022',
+                summary: 'Focused on system reliability, automation frameworks, and integration testing for core banking applications.',
+                highlights: [
+                    '<strong>Automation:</strong> Built API test suites (Postman, JMeter) reducing manual testing effort by 40%.',
+                    '<strong>Deployment Reliability:</strong> Led UAT and regression testing to ensure zero-defect production deployments.',
+                    '<strong>Agile Integration:</strong> Synthesized customer feedback into actionable insights for product teams in an Agile environment.'
+                ],
+                techStack: ['Postman', 'JMeter', 'Jira', 'API Testing', 'Agile']
+            },
+            {
+                id: 'atos',
+                role: 'Software Engineer (L2 Support)',
+                company: 'Atos',
+                location: 'Pune, India',
+                period: '12/2015 – 08/2019',
+                summary: 'Primary L2 point of contact for critical application escalations and operational process improvement.',
+                highlights: [
+                    '<strong>Incident Management:</strong> Handled technical escalations with 95% SLA adherence.',
+                    '<strong>Process Ops:</strong> Enhanced knowledge bases and standardized operational support processes.',
+                    '<strong>Feedback Loop:</strong> Collaborated with engineering to prioritize bug fixes based on customer impact.'
+                ],
+                techStack: ['L2 Support', 'Incident Mgmt', 'Root Cause Analysis', 'Knowledge Base']
+            }
+        ];
+
+        const skillsData = [
+            // Operations
+            { name: '2nd Line Support', category: 'operations', icon: '🎧' },
+            { name: 'SLA Compliance', category: 'operations', icon: '📊' },
+            { name: 'Tech Troubleshooting', category: 'operations', icon: '🔧' },
+            { name: 'Jira & Zendesk', category: 'operations', icon: '🎫' },
+            { name: 'Salesforce (CRM)', category: 'operations', icon: '☁️' },
+            { name: 'Confluence', category: 'operations', icon: '📘' },
+            // Integration
+            { name: 'REST/SOAP API', category: 'integration', icon: '🔗' },
+            { name: 'Postman', category: 'integration', icon: '🚀' },
+            { name: 'JMeter', category: 'integration', icon: '⏱️' },
+            { name: 'UAT & Regression', category: 'integration', icon: '✅' },
+            { name: 'Automation', category: 'integration', icon: '🤖' },
+            // Tech
+            { name: 'SQL', category: 'tech', icon: '💾' },
+            { name: 'Bash Scripting', category: 'tech', icon: '💻' },
+            { name: 'TCP/IP', category: 'tech', icon: '🌐' },
+            { name: 'Linux/Unix', category: 'tech', icon: '🐧' },
+            { name: 'HTML/PHP', category: 'tech', icon: '🕸️' },
+            { name: 'Core Java', category: 'tech', icon: '☕' }
+        ];
+
+        // --- STATE MANAGEMENT ---
+        let currentView = 'dashboard';
+        let activeSkillFilter = 'all';
+
+        // --- INIT ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            renderTimeline();
+            renderSkills();
+            
+            // Mobile Menu Toggle logic
+            window.toggleMobileMenu = () => {
+                const menu = document.getElementById('mobile-menu');
+                menu.classList.toggle('hidden');
+            };
+        });
+
+        // --- NAVIGATION ---
+        window.navigateTo = (viewId) => {
+            // Update Tab UI
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === viewId) {
+                    btn.classList.add('nav-active', 'text-teal-600');
+                    btn.classList.remove('text-slate-600');
+                } else {
+                    btn.classList.remove('nav-active', 'text-teal-600');
+                    btn.classList.add('text-slate-600');
+                }
+            });
+
+            // Hide all sections
+            ['dashboard', 'experience', 'skills'].forEach(id => {
+                const el = document.getElementById(id);
+                if(id === viewId) {
+                    el.classList.remove('hidden');
+                    // Re-trigger fade animation
+                    el.classList.remove('fade-in');
+                    void el.offsetWidth; // trigger reflow
+                    el.classList.add('fade-in');
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
+            
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+        };
+
+        // --- CHARTS (Chart.js) ---
+        function initCharts() {
+            // Chart 1: SLA
+            const ctxSLA = document.getElementById('slaChart').getContext('2d');
+            new Chart(ctxSLA, {
+                type: 'bar',
+                data: {
+                    labels: ['Documill (Current)', 'Atos (Past)', 'Industry Standard'],
+                    datasets: [{
+                        label: 'SLA Compliance %',
+                        data: [98, 95, 90],
+                        backgroundColor: ['#0d9488', '#94a3b8', '#e2e8f0'], // Teal-600, Slate-400, Slate-200
+                        borderRadius: 6,
+                        barThickness: 40
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { 
+                            beginAtZero: false, 
+                            min: 80, 
+                            max: 100,
+                            grid: { color: '#f1f5f9' }
+                        },
+                        x: {
+                            grid: { display: false }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => `Compliance: ${context.raw}%`
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Impact/Efficiency
+            const ctxImpact = document.getElementById('impactChart').getContext('2d');
+            new Chart(ctxImpact, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Manual Effort Reduced', 'Remaining Manual Effort'],
+                    datasets: [{
+                        data: [40, 60],
+                        backgroundColor: ['#f59e0b', '#f1f5f9'], // Amber-500, Slate-100
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        title: { 
+                            display: true, 
+                            text: 'Automation Impact (TCS Role)',
+                            font: { size: 14, weight: 'normal' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- EXPERIENCE LOGIC ---
+        function renderTimeline() {
+            const container = document.getElementById('timeline-container');
+            container.innerHTML = experienceData.map((role, index) => `
+                <div onclick="showRoleDetails('${role.id}')" 
+                     class="role-card cursor-pointer p-4 rounded-lg border border-slate-200 hover:border-teal-500 hover:bg-teal-50 transition-all group ${index === 0 ? 'border-teal-500 bg-teal-50' : 'bg-white'}">
+                    <div class="flex justify-between items-start mb-1">
+                        <span class="font-bold text-slate-800 group-hover:text-teal-700">${role.company}</span>
+                        <span class="text-xs text-slate-400 bg-white px-2 py-1 rounded border border-slate-100">${role.period.split(' ')[0]}</span>
+                    </div>
+                    <p class="text-sm text-slate-600 font-medium">${role.role}</p>
+                </div>
+            `).join('');
+
+            // Load first role by default
+            showRoleDetails(experienceData[0].id);
+        }
+
+        window.showRoleDetails = (roleId) => {
+            const role = experienceData.find(r => r.id === roleId);
+            const panel = document.getElementById('role-details-panel');
+            
+            // Update styling of list items
+            document.querySelectorAll('.role-card').forEach(card => {
+                // Simple check based on content text to highlight active
+                if(card.innerHTML.includes(role.company)) {
+                    card.classList.add('border-teal-500', 'bg-teal-50');
+                } else {
+                    card.classList.remove('border-teal-500', 'bg-teal-50');
+                    card.classList.add('bg-white');
+                }
+            });
+
+            panel.innerHTML = `
+                <div class="w-full text-left fade-in">
+                    <div class="flex flex-col md:flex-row justify-between items-start border-b border-slate-100 pb-4 mb-4">
+                        <div>
+                            <h3 class="text-2xl font-bold text-slate-800">${role.role}</h3>
+                            <div class="text-lg text-teal-600 font-semibold">${role.company} ${role.client ? `<span class="text-slate-400 text-sm font-normal">(Client: ${role.client})</span>` : ''}</div>
+                        </div>
+                        <div class="text-right mt-2 md:mt-0">
+                            <div class="text-sm text-slate-500">📍 ${role.location}</div>
+                            <div class="text-sm text-slate-500">📅 ${role.period}</div>
+                        </div>
+                    </div>
+                    
+                    <p class="text-slate-600 italic mb-6 bg-slate-50 p-3 rounded border-l-4 border-slate-300">
+                        "${role.summary}"
+                    </p>
+
+                    <h4 class="font-bold text-slate-800 mb-3 uppercase text-xs tracking-wider">Key Achievements & Responsibilities</h4>
+                    <ul class="space-y-3 mb-6">
+                        ${role.highlights.map(h => `
+                            <li class="flex items-start">
+                                <span class="mr-3 text-teal-500 mt-1">▶</span>
+                                <span class="text-slate-700 text-sm md:text-base leading-relaxed">${h}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+
+                    <div class="mt-auto pt-4 border-t border-slate-100">
+                        <div class="flex flex-wrap gap-2">
+                            ${role.techStack.map(tech => `
+                                <span class="px-3 py-1 bg-white border border-slate-200 text-slate-500 text-xs rounded-full font-mono">
+                                    ${tech}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        };
+
+        // --- SKILLS LOGIC ---
+        function renderSkills() {
+            const grid = document.getElementById('skills-grid');
+            const filtered = activeSkillFilter === 'all' 
+                ? skillsData 
+                : skillsData.filter(s => s.category === activeSkillFilter);
+            
+            grid.innerHTML = filtered.map(skill => `
+                <div class="bg-white p-4 rounded-xl border border-slate-200 hover:shadow-md transition-shadow flex items-center space-x-4 fade-in">
+                    <div class="text-2xl bg-slate-50 w-12 h-12 flex items-center justify-center rounded-full border border-slate-100">
+                        ${skill.icon}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-slate-700">${skill.name}</h4>
+                        <p class="text-xs text-slate-400 capitalize">${mapCategoryName(skill.category)}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.filterSkills = (category) => {
+            activeSkillFilter = category;
+            
+            // Update Buttons
+            document.querySelectorAll('.skill-filter-btn').forEach(btn => {
+                if(btn.dataset.category === category) {
+                    btn.classList.remove('bg-slate-100', 'text-slate-600');
+                    btn.classList.add('bg-teal-600', 'text-white', 'shadow-sm');
+                } else {
+                    btn.classList.add('bg-slate-100', 'text-slate-600');
+                    btn.classList.remove('bg-teal-600', 'text-white', 'shadow-sm');
+                }
+            });
+
+            renderSkills();
+        };
+
+        function mapCategoryName(cat) {
+            if(cat === 'operations') return 'Service Operations';
+            if(cat === 'integration') return 'Integration & QA';
+            if(cat === 'tech') return 'Database & Scripting';
+            return 'General';
+        }
+
+    </script>
+</body>
+</html>
